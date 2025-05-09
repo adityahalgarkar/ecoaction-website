@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Join EcoAction - Climate Change Prevention</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2e8b57;
+      --primary-dark: #1f6e4a;
+      --secondary: #f8f9fa;
+      --accent: #ffd166;
+      --text: #2d3436;
+      --text-light: #636e72;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Open Sans', sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      color: var(--text);
+    }
+    
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(46, 139, 87, 0.85);
+      z-index: 0;
+    }
+    
+    .register-container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 450px;
+      padding: 0 20px;
+    }
+    
+    .register-box {
+      background-color: var(--secondary);
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      transition: all 0.4s ease;
+    }
+    
+    .register-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    }
+    
+    .logo {
+      margin-bottom: 20px;
+    }
+    
+    .logo i {
+      font-size: 3.5rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    
+    h1 {
+      margin-bottom: 25px;
+      font-size: 2rem;
+      color: var(--primary);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+    }
+    
+    .tagline {
+      color: var(--text-light);
+      margin-bottom: 30px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+    
+    input {
+      width: 100%;
+      padding: 15px 15px 15px 45px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      background-color: #fff;
+    }
+    
+    input:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.2);
+    }
+    
+    .input-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+    }
+    
+    button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    button:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+    
+    .login-link {
+      margin-top: 25px;
+      display: block;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+      font-size: 0.9rem;
+    }
+    
+    .login-link:hover {
+      color: var(--primary-dark);
+      text-decoration: underline;
+    }
+    
+    .leaf-decoration {
+      position: absolute;
+      opacity: 0.7;
+      z-index: -1;
+    }
+    
+    .leaf-1 {
+      top: -30px;
+      left: -30px;
+      transform: rotate(-15deg);
+    }
+    
+    .leaf-2 {
+      bottom: -20px;
+      right: -20px;
+      transform: rotate(15deg);
+    }
+    
+    @media (max-width: 480px) {
+      .register-box {
+        padding: 30px 20px;
+      }
+      
+      h1 {
+        font-size: 1.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <div class="register-box">
+      <div class="logo">
+        <i class="fas fa-seedling"></i>
+      </div>
+      <h1>Join EcoAction</h1>
+      <p class="tagline">Create your account and start making a difference in the fight against climate change today.</p>
+      
+      <div class="input-group">
+        <i class="fas fa-user input-icon"></i>
+        <input id="username" placeholder="Username" />
+      </div>
+      
+      <div class="input-group">
+        <i class="fas fa-lock input-icon"></i>
+        <input id="password" type="password" placeholder="Password" />
+      </div>
+      
+      <button onclick="register()">Register Now</button>
+      <a href="login.html" class="login-link">Already have an account? Sign in</a>
+      
+      <i class="fas fa-leaf leaf-decoration leaf-1" style="font-size: 60px;"></i>
+      <i class="fas fa-leaf leaf-decoration leaf-2" style="font-size: 80px;"></i>
+    </div>
+  </div>
+
+  <script>
+    function register() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      if (!username || !password) {
+        alert("Please enter both username and password.");
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('ecoUsers') || '[]');
+
+      const existingUser = users.find(u => u.username === username);
+      if (existingUser) {
+        alert("Username already taken. Try a different one.");
+        return;
+      }
+
+      users.push({ username, password, score: 0 });
+      localStorage.setItem('ecoUsers', JSON.stringify(users));
+
+      alert("Registration successful! You can now log in.");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

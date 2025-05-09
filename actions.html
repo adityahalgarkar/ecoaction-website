@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>EcoAction Dashboard - Track Your Impact</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary: #2e8b57;
+      --primary-dark: #1f6e4a;
+      --secondary: #f8f9fa;
+      --accent: #ffd166;
+      --text: #2d3436;
+      --text-light: #636e72;
+      --card-bg: #ffffffdd;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('https://images.unsplash.com/photo-1466611653911-95081537e5b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Open Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--text);
+      padding: 20px;
+    }
+    
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(46, 139, 87, 0.85);
+      z-index: -1;
+    }
+    
+    header {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo i {
+      font-size: 2.5rem;
+      color: white;
+      margin-right: 15px;
+    }
+    
+    .logo-text {
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.8rem;
+    }
+    
+    .user-info {
+      color: white;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+    }
+    
+    .user-info i {
+      margin-right: 10px;
+      font-size: 1.2rem;
+    }
+    
+    .dashboard {
+      width: 100%;
+      max-width: 1200px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      transition: all 0.3s ease;
+      animation: fadeIn 0.5s ease forwards;
+      opacity: 0;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+    }
+    
+    .card-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    .card-title i {
+      margin-right: 10px;
+    }
+    
+    .actions-container {
+      grid-column: span 2;
+    }
+    
+    .action-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      padding: 15px;
+      border-radius: 10px;
+      background-color: white;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .action-item:hover {
+      background-color: #f0f0f0;
+      transform: translateX(5px);
+    }
+    
+    .action-item input[type="checkbox"] {
+      margin-right: 15px;
+      transform: scale(1.3);
+      accent-color: var(--primary);
+    }
+    
+    .action-label {
+      flex-grow: 1;
+      font-weight: 600;
+    }
+    
+    .action-points {
+      background-color: var(--primary);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    
+    .sub-question {
+      margin-left: 35px;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    select {
+      padding: 8px 15px;
+      border-radius: 8px;
+      border: 2px solid #e0e0e0;
+      font-size: 0.95rem;
+      background-color: white;
+      transition: all 0.3s;
+    }
+    
+    select:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.2);
+    }
+    
+    button {
+      padding: 15px 30px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-family: 'Montserrat', sans-serif;
+      margin-top: 20px;
+      display: block;
+      width: 100%;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    button:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .chart-container {
+      position: relative;
+      height: 250px;
+      width: 100%;
+    }
+    
+    .eco-fact {
+      background-color: var(--primary);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      animation: fadeIn 0.5s ease 0.3s forwards;
+      opacity: 0;
+    }
+    
+    .eco-fact h3 {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .eco-fact i {
+      margin-right: 10px;
+    }
+    
+    .impact-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .stat-item {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      animation: fadeIn 0.5s ease forwards;
+      opacity: 0;
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 5px;
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--text-light);
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @media (max-width: 768px) {
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+      
+      .actions-container {
+        grid-column: span 1;
+      }
+      
+      header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+      }
+      
+      .user-info {
+        margin-top: 10px;
+      }
+    }
+    
+    /* Animation delays for cards */
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+    .card:nth-child(4) { animation-delay: 0.4s; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <i class="fas fa-seedling"></i>
+      <div class="logo-text">EcoAction</div>
+    </div>
+    <div class="user-info">
+      <i class="fas fa-user"></i>
+      <span id="username-display">Welcome back!</span>
+    </div>
+  </header>
+
+  <div class="dashboard">
+    <div class="card">
+      <div class="card-title"><i class="fas fa-chart-pie"></i> Your Impact</div>
+      <div class="chart-container">
+        <canvas id="impactChart"></canvas>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-title"><i class="fas fa-trophy"></i> Your Stats</div>
+      <div class="impact-stats">
+        <div class="stat-item" style="animation-delay: 0.2s;">
+          <div class="stat-value" id="total-points">0</div>
+          <div class="stat-label">Total Points</div>
+        </div>
+        <div class="stat-item" style="animation-delay: 0.3s;">
+          <div class="stat-value" id="actions-today">0</div>
+          <div class="stat-label">Actions Today</div>
+        </div>
+        <div class="stat-item" style="animation-delay: 0.4s;">
+          <div class="stat-value" id="co2-saved">0</div>
+          <div class="stat-label">kg CO₂ Saved</div>
+        </div>
+        <div class="stat-item" style="animation-delay: 0.5s;">
+          <div class="stat-value" id="water-saved">0</div>
+          <div class="stat-label">Liters Water Saved</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card actions-container">
+      <div class="card-title"><i class="fas fa-check-circle"></i> Today's Eco Actions</div>
+      
+      <div class="action-item">
+        <input type="checkbox" name="action" value="reusableBag" id="reusableBag">
+        <label for="reusableBag" class="action-label">Used reusable shopping bag(s)</label>
+        <span class="action-points">+10</span>
+      </div>
+      
+      <div class="action-item">
+        <input type="checkbox" name="action" value="usedPublicTransport" id="usedPublicTransport">
+        <label for="usedPublicTransport" class="action-label">Used public transportation</label>
+        <span class="action-points">+30</span>
+      </div>
+      
+      <div class="action-item">
+        <input type="checkbox" name="action" value="cycled" id="cycled">
+        <label for="cycled" class="action-label">Cycled instead of driving</label>
+        <span class="action-points">+20-80</span>
+      </div>
+      <div id="cycleDistance" class="sub-question">
+        <label for="distance">Distance cycled:</label>
+        <select id="distance" name="cycleDistance">
+          <option value="0-2">0-2 km (+20)</option>
+          <option value="3-5">3-5 km (+40)</option>
+          <option value="6-10">6-10 km (+60)</option>
+          <option value="10+">More than 10 km (+80)</option>
+        </select>
+      </div>
+      
+      <div class="action-item">
+        <input type="checkbox" name="action" value="meatless" id="meatless">
+        <label for="meatless" class="action-label">Ate one or more meatless meals</label>
+        <span class="action-points">+30</span>
+      </div>
+      
+      <div class="action-item">
+        <input type="checkbox" name="action" value="reducedFoodWaste" id="reducedFoodWaste">
+        <label for="reducedFoodWaste" class="action-label">Actively reduced food waste</label>
+        <span class="action-points">+25</span>
+      </div>
+      
+      <div class="action-item">
+        <input type="checkbox" name="action" value="recycled" id="recycled">
+        <label for="recycled" class="action-label">Recycled paper, plastic, or glass properly</label>
+        <span class="action-points">+20</span>
+      </div>
+      
+      <div class="action-item">
+        <input type="checkbox" name="action" value="savedWater" id="savedWater">
+        <label for="savedWater" class="action-label">Took a shorter shower or saved water</label>
+        <span class="action-points">+15</span>
+      </div>
+      
+      <div class="action-item">
+        <input type="checkbox" name="action" value="conservedEnergy" id="conservedEnergy">
+        <label for="conservedEnergy" class="action-label">Conserved energy at home</label>
+        <span class="action-points">+15</span>
+      </div>
+      
+      <div class="action-item">
+        <input type="checkbox" name="action" value="supportedLocal" id="supportedLocal">
+        <label for="supportedLocal" class="action-label">Supported a local, sustainable business</label>
+        <span class="action-points">+40</span>
+      </div>
+      
+      <div class="action-item">
+        <input type="checkbox" name="action" value="plantedTree" id="plantedTree">
+        <label for="plantedTree" class="action-label">Planted a tree or supported planting</label>
+        <span class="action-points">+100</span>
+      </div>
+      
+      <button type="button" onclick="submitActions()">Submit Today's Actions</button>
+    </div>
+    
+    <div class="card">
+      <div class="card-title"><i class="fas fa-lightbulb"></i> Did You Know?</div>
+      <div class="eco-fact">
+        <h3><i class="fas fa-recycle"></i> Recycling Fact</h3>
+        <p>Recycling one aluminum can saves enough energy to run a TV for 3 hours! That's equivalent to about half a gallon of gasoline.</p>
+      </div>
+      <div class="eco-fact" style="animation-delay: 0.6s;">
+        <h3><i class="fas fa-bicycle"></i> Cycling Impact</h3>
+        <p>If you cycle 10 km to work instead of driving, you can reduce your carbon footprint by about 1.3 kg of CO₂ emissions each day.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Get current user
+    const currentUser = JSON.parse(localStorage.getItem('ecoCurrentUser'));
+    document.getElementById('username-display').textContent = currentUser?.username || 'Eco Warrior';
+    
+    // Initialize stats
+    const userData = JSON.parse(localStorage.getItem('ecoData') || '{}');
+    const userPoints = userData[currentUser?.username]?.points || 0;
+    
+    // Toggle cycle distance dropdown
+    const cycledCheckbox = document.getElementById('cycled');
+    const cycleDistanceDiv = document.getElementById('cycleDistance');
+    
+    cycledCheckbox.addEventListener('change', function() {
+      cycleDistanceDiv.style.display = this.checked ? 'block' : 'none';
+    });
+    
+    // Initialize chart
+    const ctx = document.getElementById('impactChart').getContext('2d');
+    const impactChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Transport', 'Waste', 'Energy', 'Food', 'Water'],
+        datasets: [{
+          data: [25, 20, 15, 30, 10],
+          backgroundColor: [
+            '#2e8b57',
+            '#3a86ff',
+            '#ffbe0b',
+            '#fb5607',
+            '#8338ec'
+          ],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              font: {
+                family: 'Open Sans',
+                size: 12
+              },
+              padding: 20
+            }
+          },
+          tooltip: {
+            bodyFont: {
+              family: 'Open Sans'
+            }
+          }
+        },
+        cutout: '70%',
+        animation: {
+          animateScale: true,
+          animateRotate: true
+        }
+      }
+    });
+    
+    // Update stats
+    document.getElementById('total-points').textContent = userPoints;
+    document.getElementById('co2-saved').textContent = Math.round(userPoints * 0.5);
+    document.getElementById('water-saved').textContent = Math.round(userPoints * 2);
+    
+    // Random eco facts
+    const ecoFacts = [
+      {
+        icon: 'fa-tint',
+        title: 'Water Conservation',
+        content: 'A 5-minute shower uses about 100 liters of water, while a bath uses up to 300 liters. Reducing your shower time by just 1 minute can save up to 20 liters!'
+      },
+      {
+        icon: 'fa-bolt',
+        title: 'Energy Savings',
+        content: 'LED bulbs use 75% less energy than incandescent lighting and last 25 times longer. Switching just 5 bulbs in your home can save about $75 per year.'
+      },
+      {
+        icon: 'fa-utensils',
+        title: 'Food Choices',
+        content: 'Producing 1kg of beef emits 60kg of greenhouse gases, while 1kg of peas emits just 1kg. One meat-free day per week is equivalent to taking 5 million cars off the road!'
+      },
+      {
+        icon: 'fa-tree',
+        title: 'Tree Power',
+        content: 'A single mature tree can absorb carbon dioxide at a rate of 21kg per year and release enough oxygen back into the atmosphere to support 2 human beings.'
+      }
+    ];
+    
+    // Rotate facts every 10 seconds
+    let currentFact = 0;
+    function rotateFacts() {
+      const factElements = document.querySelectorAll('.eco-fact');
+      const fact = ecoFacts[currentFact % ecoFacts.length];
+      
+      factElements[0].innerHTML = `
+        <h3><i class="fas ${fact.icon}"></i> ${fact.title}</h3>
+        <p>${fact.content}</p>
+      `;
+      
+      currentFact++;
+      setTimeout(rotateFacts, 10000);
+    }
+    
+    // Start rotating facts
+    setTimeout(rotateFacts, 10000);
+    
+    // Submit actions
+    function submitActions() {
+      const form = document.getElementById('actionForm');
+      const checkedActions = Array.from(document.querySelectorAll('input[name="action"]:checked'))
+        .filter(input => input.id !== 'cycled') // Exclude the main 'cycled' checkbox
+        .map(input => input.value);
+      
+      const cycleDistance = cycledCheckbox.checked ? document.getElementById('distance').value : null;
+      if (cycledCheckbox.checked && cycleDistance) {
+        checkedActions.push(`cycled-${cycleDistance}`);
+      }
+      
+      // Points system
+      const pointsPerAction = {
+        reusableBag: 10,
+        usedPublicTransport: 30,
+        'cycled-0-2': 20,
+        'cycled-3-5': 40,
+        'cycled-6-10': 60,
+        'cycled-10+': 80,
+        meatless: 30,
+        reducedFoodWaste: 25,
+        recycled: 20,
+        savedWater: 15,
+        conservedEnergy: 15,
+        supportedLocal: 40,
+        plantedTree: 100
+      };
+      
+      // Calculate new points
+      let pointsEarned = 0;
+      checkedActions.forEach(action => {
+        pointsEarned += pointsPerAction[action] || 0;
+      });
+      
+      // Update user data
+      const newTotal = (userData[currentUser.username]?.points || 0) + pointsEarned;
+      userData[currentUser.username] = { 
+        username: currentUser.username, 
+        points: newTotal,
+        lastActions: checkedActions,
+        lastActivity: new Date().toISOString()
+      };
+      
+      localStorage.setItem('ecoData', JSON.stringify(userData));
+      
+      // Update chart with new data (simplified for demo)
+      const newData = [
+        checkedActions.includes('usedPublicTransport') || checkedActions.some(a => a.startsWith('cycled')) ? 35 : 10,
+        checkedActions.includes('recycled') || checkedActions.includes('reusableBag') ? 30 : 15,
+        checkedActions.includes('conservedEnergy') ? 25 : 10,
+        checkedActions.includes('meatless') || checkedActions.includes('reducedFoodWaste') ? 40 : 20,
+        checkedActions.includes('savedWater') ? 20 : 10
+      ];
+      
+      impactChart.data.datasets[0].data = newData;
+      impactChart.update();
+      
+      // Show confirmation
+      alert(`Great job! You earned ${pointsEarned} points today. Your total is now ${newTotal} points.`);
+      
+      // Redirect to leaderboard
+      window.location.href = "leaderboard.html";
+    }
+    
+    // Add animation delays to action items
+    document.querySelectorAll('.action-item').forEach((item, index) => {
+      item.style.animation = `fadeIn 0.3s ease ${0.1 + index * 0.05}s forwards`;
+      item.style.opacity = 0;
+    });
+  </script>
+</body>
+</html>

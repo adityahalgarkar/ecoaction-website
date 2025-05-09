@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>EcoAction Leaderboard - Top Contributors</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2e8b57;
+            --primary-dark: #1f6e4a;
+            --secondary: #f8f9fa;
+            --accent: #ffd166;
+            --text: #2d3436;
+            --text-light: #636e72;
+            --gold: #ffd700;
+            --silver: #c0c0c0;
+            --bronze: #cd7f32;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Open Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            color: var(--text);
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(46, 139, 87, 0.9);
+            z-index: -1;
+        }
+        
+        .leaderboard-container {
+            background-color: var(--secondary);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 800px;
+            margin-top: 20px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .leaderboard-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+        }
+        
+        .leaderboard-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, var(--gold), var(--silver), var(--bronze));
+        }
+        
+        h2 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .leaderboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .total-participants {
+            background-color: var(--primary);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            position: sticky;
+            top: 0;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        tr:hover {
+            background-color: rgba(46, 139, 87, 0.1);
+        }
+        
+        .rank-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+        }
+        
+        .medal {
+            font-size: 1.2rem;
+        }
+        
+        .gold {
+            color: var(--gold);
+        }
+        
+        .silver {
+            color: var(--silver);
+        }
+        
+        .bronze {
+            color: var(--bronze);
+        }
+        
+        .points-cell {
+            color: var(--primary);
+            font-weight: 700;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .action-button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+        
+        .action-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .home-button {
+            background: var(--text);
+        }
+        
+        .home-button:hover {
+            background: #1a1a1a;
+        }
+        
+        .clear-button {
+            background: #e74c3c;
+        }
+        
+        .clear-button:hover {
+            background: #c0392b;
+        }
+        
+        .current-user {
+            background-color: rgba(46, 139, 87, 0.2);
+            font-weight: 700;
+        }
+        
+        .eco-impact {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .eco-impact h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .impact-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .impact-stat {
+            text-align: center;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+        
+        @media (max-width: 768px) {
+            .leaderboard-container {
+                padding: 30px 20px;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            th, td {
+                padding: 12px 10px;
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        tr {
+            animation: fadeIn 0.3s ease forwards;
+            opacity: 0;
+        }
+        
+        /* Animation delays for rows */
+        tr:nth-child(1) { animation-delay: 0.1s; }
+        tr:nth-child(2) { animation-delay: 0.2s; }
+        tr:nth-child(3) { animation-delay: 0.3s; }
+        tr:nth-child(4) { animation-delay: 0.4s; }
+        tr:nth-child(5) { animation-delay: 0.5s; }
+        tr:nth-child(6) { animation-delay: 0.6s; }
+        tr:nth-child(7) { animation-delay: 0.7s; }
+        tr:nth-child(8) { animation-delay: 0.8s; }
+        tr:nth-child(9) { animation-delay: 0.9s; }
+        tr:nth-child(10) { animation-delay: 1.0s; }
+    </style>
+</head>
+<body>
+    <div class="leaderboard-container">
+        <h2>
+            <i class="fas fa-trophy gold"></i>
+            EcoAction Leaderboard
+            <i class="fas fa-trophy gold"></i>
+        </h2>
+        
+        <div class="leaderboard-header">
+            <div class="total-participants" id="participant-count">
+                <i class="fas fa-users"></i> <span id="user-count">0</span> Eco Warriors
+            </div>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Username</th>
+                    <th>Eco Points</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboard"></tbody>
+        </table>
+        
+        <div class="eco-impact">
+            <h3><i class="fas fa-globe-americas"></i> Community Impact</h3>
+            <div class="impact-stats">
+                <div class="impact-stat">
+                    <div class="stat-value" id="total-points">0</div>
+                    <div class="stat-label">Total Points Earned</div>
+                </div>
+                <div class="impact-stat">
+                    <div class="stat-value" id="co2-saved">0</div>
+                    <div class="stat-label">kg CO₂ Reduced</div>
+                </div>
+                <div class="impact-stat">
+                    <div class="stat-value" id="water-saved">0</div>
+                    <div class="stat-label">Liters Water Saved</div>
+                </div>
+                <div class="impact-stat">
+                    <div class="stat-value" id="trees-planted">0</div>
+                    <div class="stat-label">Equivalent Trees Planted</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <a href="actions.html" class="action-button home-button">
+                <i class="fas fa-home"></i> Back to Actions
+            </a>
+            <button class="action-button clear-button" onclick="clearLocalStorage()">
+                <i class="fas fa-trash-alt"></i> Clear All Data
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Get current user
+        const currentUser = JSON.parse(localStorage.getItem('ecoCurrentUser'))?.username;
+        
+        // Get and sort leaderboard data
+        const data = JSON.parse(localStorage.getItem('ecoData') || '{}');
+        const users = Object.values(data).sort((a, b) => b.points - a.points);
+        
+        // Update participant count
+        document.getElementById('user-count').textContent = users.length;
+        
+        // Calculate community impact
+        let totalPoints = 0;
+        users.forEach(user => {
+            totalPoints += user.points || 0;
+        });
+        
+        document.getElementById('total-points').textContent = totalPoints;
+        document.getElementById('co2-saved').textContent = Math.round(totalPoints * 0.5);
+        document.getElementById('water-saved').textContent = Math.round(totalPoints * 2);
+        document.getElementById('trees-planted').textContent = Math.round(totalPoints / 100);
+        
+        // Populate leaderboard
+        const tbody = document.getElementById('leaderboard');
+        users.forEach((user, index) => {
+            let medalIcon = '';
+            let rankClass = '';
+            
+            if (index === 0) {
+                medalIcon = '<i class="fas fa-medal gold medal"></i>';
+                rankClass = 'gold';
+            } else if (index === 1) {
+                medalIcon = '<i class="fas fa-medal silver medal"></i>';
+                rankClass = 'silver';
+            } else if (index === 2) {
+                medalIcon = '<i class="fas fa-medal bronze medal"></i>';
+                rankClass = 'bronze';
+            }
+            
+            const isCurrentUser = user.username === currentUser;
+            const rowClass = isCurrentUser ? 'current-user' : '';
+            
+            const row = document.createElement('tr');
+            row.className = rowClass;
+            row.innerHTML = `
+                <td>
+                    <div class="rank-cell ${rankClass}">
+                        ${medalIcon} ${index + 1}
+                    </div>
+                </td>
+                <td>
+                    ${user.username} 
+                    ${isCurrentUser ? '<i class="fas fa-user" title="This is you!"></i>' : ''}
+                </td>
+                <td class="points-cell">${user.points}</td>
+            `;
+            
+            tbody.appendChild(row);
+        });
+        
+        function clearLocalStorage() {
+            if (confirm("Are you sure you want to clear all leaderboard data? This cannot be undone.")) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

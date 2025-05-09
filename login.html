@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>EcoAction Login - Climate Change Prevention</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2e8b57;
+      --primary-dark: #1f6e4a;
+      --secondary: #f8f9fa;
+      --accent: #ffd166;
+      --text: #2d3436;
+      --text-light: #636e72;
+      --error: #e74c3c;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Open Sans', sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      color: var(--text);
+    }
+    
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(46, 139, 87, 0.85);
+      z-index: 0;
+    }
+    
+    .login-container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 450px;
+      padding: 0 20px;
+    }
+    
+    .login-box {
+      background-color: var(--secondary);
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      transition: all 0.4s ease;
+      position: relative;
+    }
+    
+    .login-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    }
+    
+    .logo {
+      margin-bottom: 20px;
+    }
+    
+    .logo i {
+      font-size: 3.5rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    
+    h1 {
+      margin-bottom: 25px;
+      font-size: 2rem;
+      color: var(--primary);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+    }
+    
+    .tagline {
+      color: var(--text-light);
+      margin-bottom: 30px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+    
+    input {
+      width: 100%;
+      padding: 15px 15px 15px 45px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      background-color: #fff;
+    }
+    
+    input:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.2);
+    }
+    
+    .input-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+    }
+    
+    button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    button:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+    
+    .register-link {
+      margin-top: 25px;
+      display: block;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+      font-size: 0.9rem;
+    }
+    
+    .register-link:hover {
+      color: var(--primary-dark);
+      text-decoration: underline;
+    }
+    
+    .leaderboard-link {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 8px 12px;
+      border-radius: 20px;
+    }
+    
+    .leaderboard-link:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+    
+    .leaderboard-link i {
+      margin-right: 8px;
+    }
+    
+    .error-message {
+      color: var(--error);
+      font-size: 0.85rem;
+      margin-top: 5px;
+      text-align: left;
+      padding-left: 10px;
+      display: none;
+    }
+    
+    .password-toggle {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+      cursor: pointer;
+    }
+    
+    @media (max-width: 480px) {
+      .login-box {
+        padding: 30px 20px;
+      }
+      
+      h1 {
+        font-size: 1.7rem;
+      }
+      
+      .leaderboard-link {
+        top: 10px;
+        right: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="leaderboard.html" class="leaderboard-link" title="View Leaderboard">
+    <i class="fas fa-trophy"></i> Leaderboard
+  </a>
+
+  <div class="login-container">
+    <div class="login-box">
+      <div class="logo">
+        <i class="fas fa-seedling"></i>
+      </div>
+      <h1>Welcome Back</h1>
+      <p class="tagline">Login to continue your journey in fighting climate change and track your eco-actions.</p>
+      
+      <div class="input-group">
+        <i class="fas fa-user input-icon"></i>
+        <input id="username" placeholder="Username" />
+        <div id="username-error" class="error-message">Username is required</div>
+      </div>
+      
+      <div class="input-group">
+        <i class="fas fa-lock input-icon"></i>
+        <input id="password" type="password" placeholder="Password" />
+        <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+        <div id="password-error" class="error-message">Password is required</div>
+      </div>
+      
+      <button onclick="login()">Login</button>
+      <a href="register.html" class="register-link">Don't have an account? Register now</a>
+    </div>
+  </div>
+
+  <script>
+    // Toggle password visibility
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+    
+    togglePassword.addEventListener('click', function() {
+      const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+      password.setAttribute('type', type);
+      this.classList.toggle('fa-eye-slash');
+    });
+    
+    function login() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      let isValid = true;
+      
+      // Reset error messages
+      document.getElementById('username-error').style.display = 'none';
+      document.getElementById('password-error').style.display = 'none';
+      
+      // Validate username
+      if (!username) {
+        document.getElementById('username-error').style.display = 'block';
+        isValid = false;
+      }
+      
+      // Validate password
+      if (!password) {
+        document.getElementById('password-error').style.display = 'block';
+        isValid = false;
+      }
+      
+      if (!isValid) return;
+      
+      // Check against stored users
+      const users = JSON.parse(localStorage.getItem('ecoUsers') || '[]');
+      const user = users.find(u => u.username === username && u.password === password);
+      
+      if (user) {
+        // Successful login
+        localStorage.setItem('ecoCurrentUser', JSON.stringify(user));
+        window.location.href = "actions.html";
+      } else {
+        // Failed login
+        document.getElementById('password-error').textContent = "Invalid username or password";
+        document.getElementById('password-error').style.display = 'block';
+      }
+    }
+    
+    // Allow login on Enter key press
+    document.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        login();
+      }
+    });
+  </script>
+</body>
+</html>
